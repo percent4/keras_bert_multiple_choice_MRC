@@ -8,7 +8,8 @@ from keras_bert import Tokenizer
 from keras.losses import categorical_crossentropy
 from keras_bert import AdamWarmup, calc_train_steps
 
-from load_data import train_samples, dev_samples
+# from load_data import train_samples, dev_samples
+from zh_load_data import train_samples, dev_samples
 from model import SimpleMultiChoiceMRC
 from params import (dataset,
                     VOCAB_FILE_PATH,
