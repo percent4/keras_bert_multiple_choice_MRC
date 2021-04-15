@@ -17,7 +17,7 @@ from params import (dataset,
 
 # 加载训练好的模型
 model = SimpleMultiChoiceMRC(CONFIG_FILE_PATH, CHECKPOINT_FILE_PATH, MAX_SEQ_LENGTH, NUM_CHOICES).create_model()
-model.load_weights("multi_choice_model_RACE_middle_0.6458333356305956.h5")
+model.load_weights("multi_choice_model_RACE_middle_0.6777777891192172.h5")
 
 with open("./data/{}/predict.json".format(dataset), "r", encoding="utf-8") as f:
     content = json.loads(f.read())

@@ -6,10 +6,11 @@
 import numpy as np
 from keras_bert import Tokenizer
 from keras.losses import categorical_crossentropy
+from keras.optimizers import Adam
 from keras_bert import AdamWarmup, calc_train_steps
 
-# from load_data import train_samples, dev_samples
-from zh_load_data import train_samples, dev_samples
+from load_data import train_samples, dev_samples
+# from zh_load_data import train_samples, dev_samples
 from model import SimpleMultiChoiceMRC
 from params import (dataset,
                     VOCAB_FILE_PATH,
@@ -53,8 +54,7 @@ class DataGenerator:
                 sample = self.data[i]
                 Y[i % self.batch_size, sample.correct_answer] = 1
                 for choice_num, answer in enumerate(sample.answers):
-                    p_q = sample.question + sample.article
-                    x1, x2 = tokenizer.encode(first=answer, second=p_q, max_len=MAX_SEQ_LENGTH)
+                    x1, x2 = tokenizer.encode(first=sample.article, second=sample.question+answer, max_len=MAX_SEQ_LENGTH)
                     X1[i % self.batch_size, choice_num, :] = x1
                     X2[i % self.batch_size, choice_num, :] = x2
 
