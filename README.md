@@ -47,9 +47,9 @@ ________________________________________________________________________________
 
 - BERT模型
 
-模型参数： NUM_CHOICES = 4, EPOCH = 8, BATCH_SIZE = 5, MAX_SEQ_LENGTH = 384, LEARNING_RATE=1e-5, MIN_LR=1e=7, WARMUP_RATION = 0.1
+模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 5, MAX_SEQ_LENGTH = 360, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
 
-RACE midele dev数据集上的Accuracy为68.40%.
+RACE midele dev数据集上的Accuracy为70.00%.
 
 - Chinese RoBERTa-base模型
 

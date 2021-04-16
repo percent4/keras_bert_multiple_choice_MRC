@@ -78,7 +78,7 @@ if __name__ == '__main__':
         epochs=EPOCH,
         warmup_proportion=WARMUP_RATION,
     )
-    optimizer = AdamWarmup(total_steps, warmup_steps, lr=1e-5, min_lr=1e-7)
+    optimizer = AdamWarmup(total_steps, warmup_steps, lr=2e-5, min_lr=1e-8)
     model.compile(
         loss=categorical_crossentropy,
         optimizer=optimizer,
