@@ -18,7 +18,7 @@ from params import (dataset,
 
 # 加载训练好的模型
 model = SimpleMultiChoiceMRC(CONFIG_FILE_PATH, CHECKPOINT_FILE_PATH, MAX_SEQ_LENGTH, NUM_CHOICES).create_model()
-model.load_weights("multi_choice_model_haihua_competition_0.45570033577540797.h5")
+model.load_weights("./models/multi_choice_model_haihua_competition-09-0.4632.h5")
 
 with open("./data/{}/validation.json".format(dataset), "r", encoding="utf-8") as f:
     content = json.loads(f.read())
@@ -35,8 +35,7 @@ for sample in content:
         X2 = np.empty(shape=(1, NUM_CHOICES, MAX_SEQ_LENGTH))
 
         for choice_num, answer in enumerate(options):
-            p_q = question + article
-            x1, x2 = tokenizer.encode(first=answer, second=p_q, max_len=MAX_SEQ_LENGTH)
+            x1, x2 = tokenizer.encode(first=article, second=question+answer, max_len=MAX_SEQ_LENGTH)
             X1[0, choice_num, :] = x1
             X2[0, choice_num, :] = x2
 
@@ -48,4 +47,4 @@ for sample in content:
         print(q_id, predict_answer)
 
 df = pd.DataFrame({"id": q_ids, "label": q_labels})
-df.to_csv("submission_20210412_2041.csv", index=False)
+df.to_csv("submission_20210420_1709_0.4689.csv", index=False)

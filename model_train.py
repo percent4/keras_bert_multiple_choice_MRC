@@ -6,11 +6,11 @@
 import numpy as np
 from keras_bert import Tokenizer
 from keras.losses import categorical_crossentropy
-from keras.optimizers import Adam
+from keras.callbacks import ModelCheckpoint
 from keras_bert import AdamWarmup, calc_train_steps
 
-from load_data import train_samples, dev_samples
-# from zh_load_data import train_samples, dev_samples
+# from load_data import train_samples, dev_samples
+from zh_load_data import train_samples, dev_samples
 from model import SimpleMultiChoiceMRC
 from params import (dataset,
                     VOCAB_FILE_PATH,
@@ -47,22 +47,26 @@ class DataGenerator:
     def __iter__(self):
         while True:
             idxs = list(range(len(self.data)))
+            np.random.shuffle(idxs)
             X1 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
             X2 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
             Y = np.zeros(shape=(self.batch_size, NUM_CHOICES))
-            for i in idxs:
-                sample = self.data[i]
+            i = 0
+            for j in idxs:
+                sample = self.data[j]
                 Y[i % self.batch_size, sample.correct_answer] = 1
                 for choice_num, answer in enumerate(sample.answers):
                     x1, x2 = tokenizer.encode(first=sample.article, second=sample.question+answer, max_len=MAX_SEQ_LENGTH)
                     X1[i % self.batch_size, choice_num, :] = x1
                     X2[i % self.batch_size, choice_num, :] = x2
 
-                if ((i+1) % self.batch_size == 0) or i == idxs[-1]:
+                if ((i+1) % self.batch_size == 0) or j == idxs[-1]:
                     yield [X1, X2], Y
                     X1 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
                     X2 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
                     Y = np.zeros(shape=(self.batch_size, NUM_CHOICES))
+
+                i += 1
 
 
 if __name__ == '__main__':
@@ -78,7 +82,9 @@ if __name__ == '__main__':
         epochs=EPOCH,
         warmup_proportion=WARMUP_RATION,
     )
-    optimizer = AdamWarmup(total_steps, warmup_steps, lr=2e-5, min_lr=1e-8)
+    optimizer = AdamWarmup(total_steps, warmup_steps, lr=2e-5, min_lr=2e-6)
+    filepath = "models/multi_choice_model_%s-{epoch:02d}-{val_acc:.4f}.h5" % dataset
+    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, save_weights_only=True, mode='max')
     model.compile(
         loss=categorical_crossentropy,
         optimizer=optimizer,
@@ -91,7 +97,8 @@ if __name__ == '__main__':
         steps_per_epoch=len(train_D),
         epochs=EPOCH,
         validation_data=dev_D.__iter__(),
-        validation_steps=len(dev_D)
+        validation_steps=len(dev_D),
+        callbacks=[checkpoint]
     )
 
     print("finish model training!")
@@ -100,5 +107,5 @@ if __name__ == '__main__':
     print("model evaluate result: ", result)
 
     # 模型保存
-    model.save_weights('multi_choice_model_{}_{}.h5'.format(dataset, result[-1]))
+    # model.save_weights()
     print("Model saved!")
