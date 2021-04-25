@@ -19,9 +19,9 @@ from params import (dataset,
 
 # 加载训练好的模型
 model = SimpleMultiChoiceMRC(CONFIG_FILE_PATH, CHECKPOINT_FILE_PATH, MAX_SEQ_LENGTH, NUM_CHOICES).create_model()
-model.load_weights("./models/multi_choice_model_RACE_middle-07-0.6965.h5")
+model.load_weights("./models/multi_choice_model_RACE_middle-15-0.7042.h5")
 
-with open("./data/{}/dev.json".format(dataset), "r", encoding="utf-8") as f:
+with open("./data/{}/test.json".format(dataset), "r", encoding="utf-8") as f:
     content = json.loads(f.read())
 
 true_answer_list = []

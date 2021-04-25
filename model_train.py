@@ -8,9 +8,10 @@ from keras_bert import Tokenizer
 from keras.losses import categorical_crossentropy
 from keras.callbacks import ModelCheckpoint
 from keras_bert import AdamWarmup, calc_train_steps
+from tensorflow.python import math_ops, array_ops
 
-# from load_data import train_samples, dev_samples
-from zh_load_data import train_samples, dev_samples
+from load_data import train_samples, dev_samples
+# from zh_load_data import train_samples, dev_samples
 from model import SimpleMultiChoiceMRC
 from params import (dataset,
                     VOCAB_FILE_PATH,
@@ -47,7 +48,7 @@ class DataGenerator:
     def __iter__(self):
         while True:
             idxs = list(range(len(self.data)))
-            np.random.shuffle(idxs)
+            # np.random.shuffle(idxs)
             X1 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
             X2 = np.empty(shape=(self.batch_size, NUM_CHOICES, MAX_SEQ_LENGTH))
             Y = np.zeros(shape=(self.batch_size, NUM_CHOICES))
@@ -69,6 +70,12 @@ class DataGenerator:
                 i += 1
 
 
+def categorical_crossentropy_with_label_smoothing(y_true, y_pred, label_smoothing=0.1):
+    num_classes = math_ops.cast(array_ops.shape(y_true)[1], y_pred.dtype)
+    y_true = y_true * (1.0 - label_smoothing) + (label_smoothing / num_classes)
+    return categorical_crossentropy(y_true, y_pred)
+
+
 if __name__ == '__main__':
 
     # 模型训练
@@ -82,11 +89,11 @@ if __name__ == '__main__':
         epochs=EPOCH,
         warmup_proportion=WARMUP_RATION,
     )
-    optimizer = AdamWarmup(total_steps, warmup_steps, lr=2e-5, min_lr=2e-6)
+    optimizer = AdamWarmup(total_steps, warmup_steps, lr=2e-5, min_lr=1e-8)
     filepath = "models/multi_choice_model_%s-{epoch:02d}-{val_acc:.4f}.h5" % dataset
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, save_weights_only=True, mode='max')
     model.compile(
-        loss=categorical_crossentropy,
+        loss=categorical_crossentropy_with_label_smoothing,
         optimizer=optimizer,
         metrics=['accuracy']
     )

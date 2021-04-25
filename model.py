@@ -7,7 +7,7 @@
 import tensorflow as tf
 from keras.models import Model
 from keras.utils import plot_model
-from keras.layers import Input, Lambda, Dense, Activation
+from keras.layers import Input, Lambda, Dense, Activation, MaxPooling1D
 from keras_bert import load_trained_model_from_checkpoint
 
 

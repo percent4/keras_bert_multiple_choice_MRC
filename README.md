@@ -49,7 +49,7 @@ ________________________________________________________________________________
 
 模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 5, MAX_SEQ_LENGTH = 360, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
 
-RACE midele dev数据集上的Accuracy为70.00%.
+RACE midele dev数据集上的Accuracy为70.42%.
 
 - Chinese RoBERTa-base模型
 
