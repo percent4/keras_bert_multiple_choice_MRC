@@ -12,7 +12,7 @@
 
 ### 模型结构
 
-BERT模型
+BERT模型（假设模型的句子最大长度为384）
 
 ```
 __________________________________________________________________________________________________
@@ -50,6 +50,12 @@ ________________________________________________________________________________
 模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 5, MAX_SEQ_LENGTH = 360, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
 
 RACE midele dev数据集上的Accuracy为70.42%.
+
+- BERT_LARGE模型
+
+模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 2, MAX_SEQ_LENGTH = 320, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
+
+RACE midele dev数据集上的Accuracy为75.07%.
 
 - Chinese RoBERTa-base模型
 

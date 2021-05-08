@@ -70,6 +70,7 @@ class DataGenerator:
                 i += 1
 
 
+# 标签平滑机制
 def categorical_crossentropy_with_label_smoothing(y_true, y_pred, label_smoothing=0.1):
     num_classes = math_ops.cast(array_ops.shape(y_true)[1], y_pred.dtype)
     y_true = y_true * (1.0 - label_smoothing) + (label_smoothing / num_classes)
@@ -115,4 +116,4 @@ if __name__ == '__main__':
 
     # 模型保存
     # model.save_weights()
-    print("Model saved!")
+    # print("Model saved!")
