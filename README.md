@@ -45,19 +45,25 @@ ________________________________________________________________________________
 
 ### 模型效果
 
-- BERT模型
+- BERT-BASE模型, 训练数据集为RACE middle训练数据集
 
 模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 5, MAX_SEQ_LENGTH = 360, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
 
 RACE midele dev数据集上的Accuracy为70.42%.
 
-- BERT_LARGE模型
+- BERT-BASE模型，训练数据集为RACE全量训练数据集
+
+模型参数： NUM_CHOICES = 4, EPOCH = 10, BATCH_SIZE = 3, MAX_SEQ_LENGTH = 380, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
+
+在RACE dev数据集上的accuracy为67.38%, 在RACE middle test数据集上的accuracy为72.08%, 在RACE middle high数据集上的accuracy为62.41%, 在RACE test数据集上的accuracy为65.22%.
+
+- BERT_LARGE模型，训练数据集为RACE middle训练数据集
 
 模型参数： NUM_CHOICES = 4, EPOCH = 20, BATCH_SIZE = 2, MAX_SEQ_LENGTH = 320, LEARNING_RATE=2e-5, MIN_LR=1e-8, WARMUP_RATION = 0.1
 
 RACE midele dev数据集上的Accuracy为75.07%.
 
-- Chinese RoBERTa-base模型
+- Chinese RoBERTa-base模型，数据集为海华中文阅读理解比赛训练数据集
 
 模型参数： NUM_CHOICES = 4, EPOCH = 10, BATCH_SIZE = 2, MAX_SEQ_LENGTH = 510, LEARNING_RATE=2e-5, MIN_LR=2e-6, WARMUP_RATION = 0.1
 
